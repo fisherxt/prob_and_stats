@@ -1,0 +1,425 @@
+%%
+%
+%
+%%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{thisbookstyle}[2020/10/01]
+%
+%% ==== Layout
+\RequirePackage [%
+%    layout={5.8in,8.3in},
+    hmargin={18.5mm,16.5mm},
+    vmargin={0.68in,0.72in},
+    paper=a5paper,
+%    layoutoffset=1.0in,
+%    showframe, 
+%    showcrop
+    footskip=40pt]{geometry}
+%
+% ==== Packages
+\RequirePackage { ifthen }
+\RequirePackage { calc }
+\RequirePackage { xparse, etoolbox }
+\RequirePackage [ table ] { xcolor }
+\RequirePackage { tikz, tcolorbox }
+\RequirePackage { enumitem }    % -- enumerate items
+% -- equations align
+\RequirePackage [ fleqn ]{ amsmath }
+\setlength{\mathindent}{2em}
+% -- for special indent
+\RequirePackage { changepage }  % -- for env:adjustwidth
+%
+%% ==== Formats
+% -- font
+\RequirePackage { fontsize }
+\changefontsize[11]{9.25}    % -- fontsize.sty 
+%
+\RequirePackage { fontspec }
+\RequirePackage { fontawesome }
+\RequirePackage{%
+    xeCJKfntef,  % -- emphasis
+    pxrubrica    % -- ruby
+}
+%% ---- fonts
+% 原始字体(森泽商用)：
+% rm - UD Reimin 黎明(https://tw.morisawa.co.jp/fonts/specimen/6122)
+% sf - UD ShinGo 新黑(https://tw.morisawa.co.jp/fonts/specimen/6138)
+% 章数字：UDタイポス512 (https://www.typebank.co.jp/fontfamily/udtypos/)
+% 节数字：UD 新黑圆体(6158)
+\newfontfamily{\latin}{Latin725BT-Roman.otf}[Path=./fonts/]
+\newfontfamily{\xkcd}{xkcd-script.ttf}[Path=./fonts/, Ligatures=TeX]
+\newfontfamily{\tamil}{Tamil MN.ttc}[Path=./fonts/, Ligatures=TeX]
+% -- set fonts
+\setmainfont{Source Han Serif}
+\setsansfont{Sarasa Gothic J}
+\setmonofont{Sarasa Mono SC}
+\setCJKmainfont{Source Han Serif}[
+FontFace = {lt}{n}{* Light},
+UprightFont     = * Medium,
+BoldFont        = * Bold,
+ItalicFont      = * SemiBold,
+BoldItalicFont  = * SemiBold,
+FontFace = {eb}{n}{* Heavy}]
+\setCJKsansfont{Sarasa Gothic J}[
+FontFace = {lt}{n}{* Light},
+UprightFont     = *,
+BoldFont        = * Bold,
+ItalicFont      = * Italic,
+BoldItalicFont  = * Bold Italic,
+FontFace = {eb}{n}{Font = * Bold, FakeBold=1.4}]
+\setCJKmonofont{Sarasa Mono J}[
+FontFace = {lt}{n}{* Light},
+UprightFont     = *,
+BoldFont        = * Semibold,
+ItalicFont      = * Italic,
+BoldItalicFont  = * Bold Italic,
+FontFace = {eb}{n}{* Bold}]
+% -- \ltseries for Light Weight Font
+\DeclareRobustCommand{\ltseries}{\fontseries{lt}\selectfont}
+\DeclareRobustCommand{\ebseries}{\fontseries{eb}\selectfont}
+% -- font :: circled numbers
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+        \node[shape=circle,draw,inner sep=1pt] (char) {\scriptsize#1};}}
+% -- title settings
+\newcommand\chapnumber[1]{\raisebox{-.4ex}[1ex][.9ex]{\makebox[.8ex+\expandafter\widthof{\thechapter}]{#1}}}
+\newcommand\chapname[1]{\ltseries\underline{\Large#1}}
+\newcommand\secnumber[1]{\raisebox{-.1ex}{\textbf{#1}}}
+\ctexset{%
+    tocdepth = section,
+    chapter = {
+        beforeskip = \CTEXifname{-22pt}{-12pt},
+        afterskip = 25pt,
+        format = \CTEXifname{\sffamily\centering}{\sffamily\bfseries\raggedright},
+        name = {第,章},
+        nameformat = \rule{\linewidth}{.7pt}\par\vspace{.22in}\chapname,
+        number = \arabic{chapter},
+        numberformat = \zihao{0}\chapnumber,
+        titleformat = \CTEXifname{\ltseries\huger}{\LARGE},
+        aftername = \par\nointerlineskip\vspace{.36in},
+        aftertitle = \par\nointerlineskip\vspace{0.3in}\CTEXifname{\vspace{0.2in}\rule{\linewidth}{.7pt}}{}\par\nointerlineskip,
+        afterindent = true
+    },
+    section = {
+        format = \sffamily\LARGE\raggedright,
+        numberformat = \huge\secnumber,
+        aftername = \hspace{1.2em},
+        beforeskip = 22pt,
+        afterskip = 8pt,
+        aftertitle = \par,
+        afterindent = true
+    },
+    subsection = {
+        format = \sffamily\bfseries\zihao{5}\raggedright,
+        number = (\arabic{subsection}),
+        numberformat = \sffamily,
+        afterskip = 0pt,
+        afterindent = true
+    }
+}
+%
+%% ==== Pagestyle
+\RequirePackage{fancyhdr}
+\fancypagestyle{this@headings}{%
+    \fancyhead{}
+    \fancyhead[EL]{\ltseries\sffamily\small\leftmark}
+    \fancyhead[OR]{\ltseries\sffamily\small\rightmark}
+    \fancyfoot{}
+    \fancyfoot[EL,OR]{\small\latin\thepage}
+    \renewcommand{\headrulewidth}{\z@}
+    \renewcommand{\footrulewidth}{\z@}}
+\renewcommand\frontmatter{%
+    \if@openright\cleardoublepage\else\clearpage\fi
+    \@mainmatterfalse
+    \pagenumbering{roman}
+    \pagestyle{this@headings}}
+\renewcommand\mainmatter{%
+    \if@openright\cleardoublepage\else\clearpage\fi
+    \@mainmattertrue
+    \pagenumbering{arabic}
+    \pagestyle{this@headings}}
+\renewcommand\backmatter{%
+    \if@openright\cleardoublepage\else\clearpage\fi
+    \@mainmatterfalse
+    \pagestyle{this@headings}
+    % Restore chapter entry contents line
+    \titlecontents{chapter}
+    [0pt]
+    {\addvspace{15pt}\sffamily\small}
+    {}
+    {}
+    {\titlerule*[3pt]{.}\normalsize~\thecontentspage}
+    [\addvspace{-15pt}\nointerlineskip]
+}
+% - apply pagestyle to special page(chap 1st page, etc...)
+\renewcommand\ps@plain{%
+    \fancyhead{}
+    \fancyfoot[EL,OR]{\small\latin\thepage}}
+%
+%% ==== Boxes
+\usetikzlibrary { calc, shapes.misc, shapes.callouts }
+\usetikzlibrary { decorations.pathmorphing }
+\usetikzlibrary { backgrounds }
+\usetikzlibrary { patterns }
+\tcbuselibrary {skins, breakable}
+% -- chapter intro box
+\newtcolorbox{chapintro}{
+    enhanced,
+    boxsep=0pt,
+    left=1.5em,right=1.5em,top=1.5em,bottom=1.5em,
+    width=.9\textwidth,
+    before upper={\parindent1em},
+    fontupper=\sffamily\footnotesizer,
+    rightupper=1.25cm,
+    center,frame hidden,
+    interior code={
+        \draw[line width=0.3pt] 
+        (frame.south west) -- 
+        ([yshift=-4mm]frame.north west) -- 
+        ([xshift=4mm]frame.north west) -- 
+        (frame.north east) -- 
+        ([yshift=4mm]frame.south east) -- 
+        ([xshift=-4mm]frame.south east) -- 
+        cycle; 
+    },
+    overlay={
+        \node[anchor=center, rotate=20] 
+        at ([xshift=2mm,yshift=6.5mm]frame.south east)
+        {\includegraphics[width=14mm,height=9mm]{example-image-a}};
+        \node[anchor=center, rotate=-15] 
+        at ([xshift=-1.5mm,yshift=16.5mm]frame.south east)
+        {\includegraphics[width=14mm,height=8.5mm]{example-image-a}};
+        \node[anchor=center, rotate=20] 
+        at ([xshift=0pt,yshift=25.5mm]frame.south east)
+        {\includegraphics[width=12mm,height=9mm]{example-image-a}};
+        \node[anchor=center, rotate=15] 
+        at ([xshift=-6.5mm,yshift=0mm]frame.south east)
+        {\includegraphics[width=9mm,height=9mm]{example-image-a}};
+    }
+}
+% -- 類題 question box
+\newcounter{sim}[chapter]
+\newtcolorbox[use counter=sim]{simQ}{%
+    enhanced,breakable,
+    title={類題~\thechapter.\thetcbcounter},
+    fonttitle=\bfseries\rmfamily\footnotesize,
+    left=.5em,right=.5em,top=3pt,bottom=4pt,boxsep=2pt,
+    before skip=10pt,after skip=12pt,
+    colback=black!10!white,
+    colframe=black!50!white,
+    width=\textwidth,
+    boxrule=0.5pt,
+    before upper={\parindent1em},
+    fontupper=\normalsize,
+    sharp corners
+}
+% -- 類題 answer box
+\newtcolorbox{simA}{%
+    enhanced,
+    breakable,
+    borderline west={3pt}{0pt}{black!20!white},
+    colbacktitle=black!62!white,
+    title={答え},
+    fonttitle=\sffamily\bfseries\footnotesize,
+    attach boxed title to top left={yshift=-2.75pt,xshift=-1.225pt},
+    %    boxed title size=copy,
+    %    toptitle=0pt,
+    %    bottomtitle=0pt,
+    right=0pt,boxsep=0pt,
+    before skip=10pt,after skip=10pt,
+    colback=white,
+    frame hidden,
+    before upper={\parindent1em},
+    boxed title style={frame hidden, 
+        left=4pt,right=4pt,top=1.75pt,bottom=1.75pt,boxsep=0mm}
+}
+% -- cartoon says box
+\def\bear{example-image-a}
+\def\loli{example-image-b}
+\newcommand{\whosays}[2]{%
+    \ifthenelse { \equal{#1}{bear} }{%
+        \edef\img{ \bear }
+        }{%
+        \ifthenelse { \equal{#1}{loli} }{%
+            \edef\img{ \loli }
+        }{%
+            \def\img{ example-image-a }
+        }
+    }
+    \smallskip
+    \noindent
+    \begin{tikzpicture}
+        \node [anchor=south west,inner sep=0pt] at (0, 0) (cartoon) {\includegraphics[width=.188\textwidth,height=.2\textwidth]{\img}};
+        \node [%
+        anchor=north west,
+        rectangle callout,
+        callout absolute pointer=(cartoon.center), 
+        callout pointer width=0.34cm,
+        draw=none,
+        rounded corners=3pt,
+        text width=0.73\textwidth, 
+        minimum width=0.72\textwidth, 
+        inner sep=2ex] at (.21\textwidth,.16\textwidth)
+        (words) 
+        {\ltseries\sffamily\small #2};
+        
+        \draw[gray,rounded corners=3pt] (words.north west) -- (words.north east) -- (words.south east) -- (words.south west) to[sharp corners]
+        ([yshift=-5mm]words.north west) to[sharp corners]
+        ([xshift=-1.5mm, yshift=-3.5mm]words.north west) to[sharp corners]
+        ([yshift=-2mm]words.north west) -- cycle
+        ;
+    \end{tikzpicture}
+    \smallskip
+}
+%
+% -- 例 box
+\newcounter{example}[chapter]
+\newcommand{\extitle}{%
+    \stepcounter{example}
+    \tcbox[%
+    enhanced,rounded corners,frame empty,
+    left=4pt,right=4pt,top=1.75pt,bottom=1.75pt,boxsep=0pt,
+    arc=5pt,auto outer arc,
+    coltext=black,
+    colback=black!20!white,
+    fontupper=\sffamily\bfseries\footnotesize,
+    before skip=5pt,after skip=5pt,
+    ]{例~\thechapter.\arabic{example}}\par
+}
+%
+% ==== Footnote style
+\let\@makefntextorig\@makefntext
+\newlength{\fntnumberwidth}
+\setlength{\fntnumberwidth}{2.25em}
+\newcommand{\@makefntextcustom}[1]{%
+    \makebox[\fntnumberwidth][l]{\thefootnote\hspace{\fntnumberwidth}}
+    \parbox[t][0pt]{\textwidth-\fntnumberwidth}{#1}%
+}
+\renewcommand{\@makefntext}[1]{\@makefntextcustom{#1}}
+\renewcommand{\thefootnote}{\sffamily *~\arabic{footnote}}
+%
+% ==== Exercise Section Customization
+% -- section title box
+\newcommand{\exersection}{%
+    \begin{tcolorbox}[
+        before skip=15pt,
+        after skip=6pt,
+        text width=\textwidth,
+        sharp corners,
+        halign=flush center,
+        colback=black!50!white,
+        coltext=white,
+        left=0pt,right=0pt,top=3pt,bottom=3pt,
+        boxsep=0pt,
+        boxrule=0pt,
+        toprule=1.25pt
+        ]
+        \makebox[6em][s]{\sffamily\bfseries 章末問題}
+    \end{tcolorbox}
+    \addcontentsline{toc}{section}{章末問題}
+}
+% -- Diamonds
+\newcommand{\points}[1]{% Print points in margin
+    \leavevmode\makebox[0pt][r]{#1\hspace{2.75em}}\ignorespaces}
+\newcommand\diamonds[1]{
+    \ifnum#1=1
+        \points{\parbox[t][0pt][t]{1em}{\addvspace{-1.25ex}\scriptsize\faDiamond}}
+    \else
+        \ifnum#1=2
+            \points{\parbox[t][0pt][t]{1em}{\addvspace{-1.4ex}\scriptsize\faDiamond\par\nointerlineskip\faDiamond}}
+        \else
+            \points{\parbox[t][0pt][t]{1em}{\addvspace{-1.4ex}\scriptsize\faDiamond\par\nointerlineskip\faDiamond\par\nointerlineskip\faDiamond}}
+        \fi
+    \fi
+}
+% -- enumerate
+\setlist{itemsep=0pt, parsep=0pt, topsep=6pt}
+%
+\newenvironment{exercise}[1]{%
+    \exersection
+    \smallrrr
+    \begin{enumerate}[%
+        label=\thechapter.\arabic*,
+        align=left,
+        topsep=0pt,
+        parsep=1pt,
+        itemsep=6pt,
+        labelsep=0.4em,
+        labelwidth=2.5em,
+        leftmargin=3em,
+        listparindent=1em,
+        font=\bfseries\sffamily]
+        #1
+    }{%
+    \end{enumerate}
+}
+%
+\newenvironment{exenum}[1]{%
+    \begin{enumerate}[%
+        label=(\arabic*), 
+        leftmargin=2.25em, 
+        labelsep=.75em, 
+        parsep=0pt, 
+        itemsep=0pt, 
+        topsep=3pt]
+        #1
+    }{%
+    \end{enumerate}
+}
+%
+%
+%% ==== Table of Contents
+\RequirePackage{ titletoc }
+\renewcommand\contentsname{目\hspace{1em}次}
+\newlength{\indent@chapter@entry@toc}
+\newlength{\indent@section@entry@toc}
+\setlength\indent@chapter@entry@toc{17.5mm}
+\setlength\indent@section@entry@toc{16mm}
+\contentsmargin{0pt}
+% ---- chapter entries
+\titlecontents{chapter}
+[\indent@chapter@entry@toc]
+{\addvspace{15pt}\sffamily\bfseries\normalsizer}
+{\vspace{-\baselineskip}\filbreak\contentslabel{\indent@chapter@entry@toc}\large}
+{\hspace*{-\indent@chapter@entry@toc}\sffamily\small}
+{}
+[\nointerlineskip]
+% ---- section entries
+%\dottedcontents{section}[5.3em]{}{3.2em}{3pt}
+\titlecontents{section}
+[\indent@section@entry@toc]
+{\sffamily\small} % - formatting of the entry.
+{\mbox{\bfseries\contentslabel{10mm}}} % - numbered-entry-format
+{\hspace*{-10mm}} % - numberless-entry-format
+{\titlerule*[3pt]{.}\normalsize~\thecontentspage}
+%
+%
+% ==== References
+\RequirePackage { graphicx, booktabs }
+\RequirePackage { caption } [ 2020/09/12 ]
+\captionsetup[figure]{%
+    name=図, 
+    labelsep=quad,
+    font={footnotesize,bf,sf}
+}
+\captionsetup[table]{%
+    name=表,
+    labelsep=quad,
+    font={footnotesize,bf,sf}
+}
+%
+\RequirePackage [ hidelinks ] { hyperref } 
+\RequirePackage { cleveref }
+\crefname{figure}{図}{図}
+\crefname{table}{表}{表}
+\crefname{equation}{式}{式}
+\crefdefaultlabelformat{#2#1#3~}
+%
+%% ==== Colors
+\definecolor{c0}{RGB}{84,171,198}
+\definecolor{c1}{RGB}{74,150,173}
+\definecolor{c2}{RGB}{255,250,205}
+\definecolor{c3}{RGB}{95,162,162}
+%
+\AtBeginDocument{%
+    \pagestyle{empty}
+}

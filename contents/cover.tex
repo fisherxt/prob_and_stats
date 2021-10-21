@@ -1,0 +1,103 @@
+\begin{tikzpicture}[remember picture, overlay]
+    \node [%
+    anchor=north west,
+    minimum width=0.676\paperwidth,
+    minimum height=0.236\paperwidth
+    ] 
+    at ([xshift=0.053\paperwidth]current page.north west) (n1) 
+    {};
+    
+    \begin{scope}[on background layer]
+        \path[preaction={fill,c0},draw=none,pattern=checkerboard,pattern color=c1]
+        decorate[decoration={zigzag,segment length=3.88mm, amplitude=1mm}]
+        {(n1.north east)--(n1.south east)}--(n1.south west)|-cycle;
+    \end{scope}
+    
+    \node [
+    font=\normalsizerrr,
+    align=left,draw=none,
+    text=white,
+    anchor=south west,
+    inner ysep=1.5pt,
+    inner xsep=2.25pt,
+    scale=3.33
+    ] at (n1.south west) (n2) 
+    {
+        \sffamily{\bfseries 理工系}{\ltseries のための} \\[-1.25ex] 
+        \sffamily{\bfseries 数学}{\ltseries 入門}
+    };
+    
+    \node [
+        anchor=south west,
+        align=left,text=c2,
+        rotate=4,scale=1.1
+    ] 
+    at ([xshift=3mm,yshift=1.0mm]n1.south) 
+    {
+        \xkcd Introduction to Mathematics \\[-1.2ex] 
+        \xkcd for Science and Engineering \\[-1.2ex] 
+        \xkcd learners
+    };
+    
+    \node [
+        anchor=north west,
+        inner ysep=1.5pt,
+        inner xsep=0pt,
+        draw=white,scale=6.2,
+    ] 
+    at (n1.south west) 
+    (n3) 
+    {   
+        \sffamily\ebseries
+        確率\kern-.25em\textrm{・}\kern-.25em統計
+    };
+    
+    \node [
+        anchor=north west,
+        inner ysep=2.5pt,
+        inner xsep=6.0pt,
+        minimum height = 2em,
+        draw=white,scale=1,
+    ] 
+    at (n3.south west) 
+    (n4) 
+    {
+        \sffamily\bfseries\large 菱田~博俊\,\textcolor{c3}{$\bullet$}\,\ltseries 著
+    };
+    
+    \fill [preaction={fill,c0}, pattern=checkerboard,pattern color=c1] ([xshift=-.99\paperwidth, yshift=0.5\paperheight]current page.south east)  arc(-180:0:.678\paperwidth) -- cycle;
+    
+    \node[
+        anchor=north west,inner sep=0pt
+    ] 
+    at ([xshift=2pt]current page.west) 
+    (img)
+    {
+        \includegraphics[width=.87\paperwidth, height=0.455\paperheight]{example-image-a}
+    };
+    
+    \node[
+        anchor=north west,
+        inner xsep=2.5ex,
+        inner ysep=2.0ex,
+        scale=1.75,text=white
+    ] 
+    at (img.north west)
+    {
+        {\tamil\addfontfeature{LetterSpace=8.0} Probability and Statistics}
+    };
+    
+    \node[anchor=south west,inner sep=0pt] 
+    at ([xshift=10mm, yshift=-25mm]current page.center) 
+    (img2)
+    {
+        \includegraphics[width=.38\paperwidth, height=0.32\paperheight]{example-image-b}
+    };
+    
+    \node[anchor=south east] 
+    at (img.south east)
+    (logo) 
+    {
+        \includegraphics[scale=0.2]{example-image-c}
+    };
+\end{tikzpicture}

@@ -1,0 +1,30 @@
+% !TeX encoding = UTF-8
+% !TeX program = xelatex
+\documentclass[%
+    UTF8, 
+    zihao=false, 
+    scheme=plain,
+    linespread=1.4,
+    autoindent=1em]{ctexbook}
+%
+% ---- load .sty for this book
+\usepackage{thisbookstyle}
+\usepackage{bxjalipsum}
+%
+% ---- macros
+\xeCJKsetup { underline = { skip = false } }
+\newcommand\uemph[1]{\CJKunderline{#1}}
+\newcommand\bemph[1]{\textsf{\textbf{#1}}}
+\newcommand\tildeto{~～~}
+\newcommand\sfcref[1]{\textsf{\cref{#1}}}
+% 
+\begin{document}
+    \include{contents/cover.tex}
+    \frontmatter
+    \include{contents/intro.tex}
+    \tableofcontents
+    \mainmatter
+    \include{contents/chapter01.tex}
+    \include{contents/chapter02.tex}
+    \include{contents/testcontent.tex}
+\end{document}

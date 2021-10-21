@@ -1,0 +1,149 @@
+\chapter{確率集合論の基礎}
+
+\begin{chapintro}
+    この章では、高校で学ぶべき集合と確率の基礎を復習しながら、集
+    合の考え方が確率の考え方につながっていることを学びます。順列
+    や組合せについて具体的な例で考える際に、集合の考え方を利用する
+    と全体を明るく見通せます。
+    
+    それぞれの問題を解くときに、順列を使うのか、組合せを使うのか
+    を判定できるようになりましょよう。
+\end{chapintro}
+
+\section{集合論の考え方}
+% \uemph{\bemph{集合}}
+% \bemph{\uemph{集合}}
+この節では、基本的な用語や式を\bemph{ヴェン図}\footnote{考案したイギリスの数学者 John Venn の名にちなんでいます。}を介してまとめます。式を駆 使して問題を解くのもよいですが、\uemph{ヴェン図から集合同士の関係性を考える ことこそが\bemph{\mbox{集合}}の本質}です。式とヴェン図が頭の中で連動できることが理想的です。
+
+\extitle{} 1\tildeto20 の自然数を分類してみましょう。ここで、分類すべき対象である 1\tildeto20を、\bemph{要素＝元}と言います。要素数が少ない場合には、イメージを得るためにも、全ての要素をヴェン図で分類するのがお勧めです（{\sfcref{fig:ex2.1}}）。
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=.4\textwidth,height=.3\textwidth]{example-image-a}
+    \caption{例2.1のヴェン図\label{fig:ex2.1}}
+\end{figure}
+
+ヴェン図では、全ての要素を外枠で囲い\bemph{全体集合} $U$ とします。ここでは、$U$ の要素は 1∼20 で、$U$ の要素数 $n(U)$ は 20 です。数学的記述は以下の通りです。
+
+\begin{equation*}
+    U=\{1,2,\ldots,19,20\},\quad n(U)=20.
+\end{equation*}
+
+\bemph{部分集合}として、2 の倍数の集合 $A$、3 の倍数の集合 $B$、4 の倍数の集合 $C$、23 の倍数の集合 $D$ を考えます。これらを、同様に次のように記述します。部 分集合は、全体集合に含まれます。
+
+\begin{align*}
+    A &= \{2, 4, 6, 8, 10, 12, 14, 16, 18, 20\},\quad n(A) = 10\\
+    B &= \{3, 6, 9, 12, 15, 18\},\quad n(B) = 6\\
+    C &= \{4, 8, 12, 16, 20\},\quad n(C) = 5 \\
+    D &= \{\quad\} = \emptyset,\quad n(D) = 0
+\end{align*}
+
+ここで、$\emptyset$ は要素がないことを表し、要素のない $D$ を\bemph{空集合}と言います。
+
+$U$ において、例えば $A$ の要素を全て除いた集合を、$A$ の\bemph{補集合} $\overline{A}$ と言いま す。以下が成立します。 
+
+\begin{equation}
+    A + \overline{A} = U,\quad n(A) + n(\overline{A}) = n(U) 
+\end{equation}
+
+
+全ての要素を、必ずいずれかの集合に属するように分類することを、「ミシ\nobreak ィ\footnote{ミシィは、\underline{m}utually \underline{e}xclusive and \underline{c}ollectively \underline{e}xhaustive の頭文字 MECE の日本語読 みです。「相互に重複せず、全体として漏れがない」と言う意味です。}に分類する」と言います。補集合はこの考え方の一種で、例えばケース $A$、ケース $B$、ケース $C$ と考えた後、「その他のケース」を考えることに対応 します。数学の答案論述をする際にも、研究をするうえでも、\uemph{考え落としがな いように常に補集合を意識}しましょう。 
+
+$A$ と $B$ の両方に属する要素、すなわち 6 の倍数の集合を、\bemph{積集合}（\bemph{共通集合}）と言い、$A \cap B$ と表記します。また、$A$ と $B$ のどちらかに属する要素の集合 を、\bemph{和集合}（\bemph{融合集合}）と言い、$A \cup B$ と表記します。$A \cap B$ と $A \cup B$ につ いて、以下の\cref{eq:set-rel}が成立します。
+
+\begin{equation}\label{eq:set-rel}
+    \begin{split}
+        &n(A \cup B) = n(A) + n(B) - n(A \cap B)\\
+        &(A \cap B)\subset A,\quad(A \cap B)\subset B,\quad (A \cup B)\supset A,\quad (A \cup B)\supset B
+    \end{split}
+\end{equation}
+
+この部分集合 $C$ は $A$ に完全に含まれるので、以下の関係が成立します。
+\begin{equation}
+    A \supset C,\quad A \cap C = C,\quad A \cup C = A
+\end{equation}
+さらに、この場合には派生的に以下の関係も成立します。
+
+\begin{equation}
+    (A \cup B) \supset (C \cup B),\quad (A \cap B) \supset (C \cap B)
+\end{equation}
+
+\begin{simQ}
+大小のサイコロを振って、出た目で 2 桁の数を作ります。具体的には、大 きいサイコロの目を十の位、小さいサイコロの目を一の位にします。集合 A を 3 の倍数、集合 B を 30 以上 50 未満としたとき、次の各問に答えま しょう。
+\begin{enumerate}[label=(\arabic*), itemsep=0pt, parsep=0pt]
+\item $n(A)$ と $n(B)$ を求めましょう。 
+\item $A$ と $B$ の積集合の要素を求めましょう。
+\item $A$ と $B$ の和集合の補集合を求めましょう。 
+\item 空集合を一つ考えてみましょう。
+\end{enumerate}
+\end{simQ}
+\begin{simA}
+    ヴェン図は\sfcref{fig:sim2.1}です。描ける限り描く習慣をつけましょう。
+    {\centering
+    \includegraphics[width=.6\textwidth,height=.3\textwidth]{example-image-a}
+    \captionof{figure}{類題 2.1 のヴェン図\label{fig:sim2.1}}}
+
+    \begin{align*}
+        U = &\ \{11,~\cdots,~16,~ 21,\cdots,~26,~31,\cdots,~36,~41,\cdots,\\
+            &46,~51,\cdots ,~56,~61,\cdots,~66\}
+    \end{align*}
+    です。
+    
+    \begin{enumerate}[label=(\arabic*), itemsep=0pt, parsep=0pt]
+        \item $A = \{12,\ 15,\ 21,\ 24,\ 33,\ 36,\ 42,\ 45,\ 51,\ 54,\ 63,\ 66\}, n(A) = 12$ \\
+        $B = \{31,\ 32,\ 33,\ 34,\ 35,\ 36,\ 41,\ 42,\ 43,\ 44,\ 45,\ 46\}, n(B) = 12$
+        \item $A \cap B = \{33,\ 36,\ 42,\ 45\}, n(A \cap B) = 4$
+        \item $\overline{A \cup B} = \{11,\ 13,\ 14,\ 16,\ 22,\ 23,\ 25,\ 26,\ 52,\ 53,\ 54,\ 56,\ 61,\ 62,\ 64,$ $65\}, n(\overline{A \cup B})=16$
+        \item 「70 以上」「19 の倍数」「一の位が 8の数」等。
+    \end{enumerate}
+\end{simA}
+
+\section{順\quad 列}
+\bemph{順列}とは、ある集合の中からいくつかの要素を取り出して一列に並べること です。順列の公式は高校でも学びますが、樹形図を作成して具体的なイメー ジを持つことが肝心です。式と樹形図を連動させて考えられるようになりましょう。
+
+\subsection{直順列}
+
+\extitle「A」「C」「E」「R」と書かれたカードが 1 枚ずつあります。これを並べて、 英配列を作ります。 
+
+この程度の数であれば、全ての配列を一覧にする\bemph{樹形図}が簡明です。悩む前に作ってみましょう。描けば、規則性に気づくこともあります。そのまま英単語として読める配列が多いですね。
+
+\begin{equation*}
+   4\times3\times2\times1\bigg(=\frac{4!}{0!}=_4P_4\bigg)=24~\textrm{〔通り〕}
+\end{equation*}
+
+\begin{figure}[hb]\centering
+    \includegraphics[width=.4\textwidth,height=.77\textwidth]{example-image-a}
+    \caption{例 2.2 の樹形図}
+\end{figure}
+
+\extitle もし、この 4 枚中 3 枚だけを使うのであれば、樹形図の左の 3 列だけを考え ればよいことになります。
+
+\begin{equation*}
+    4\times3\times2\bigg(=\frac{4!}{1!}=_4P_3\bigg)=24~\textrm{〔通り〕}
+\end{equation*}
+
+3 枚使うということは、1 枚残すということです。この 1 枚を 4 枚目として並べても、残しても、同じことですね。
+
+一般的に、全て異なる $n$ から $k$ を配列させるとき、\cref{eq:perm}で計算される配 列が作れます。これを $_nP_k$ と書きます\footnote{順列（\underline{p}ermutation）の頭文字をとっていま。}。
+
+\begin{equation}\label{eq:perm}
+    _nP_k = \frac{n!}{(n-k)!}
+\end{equation}
+
+\begin{simQ}
+    カード「A」「C」「E」「R」「T」から 3 枚を並べます。何通りできますか。
+\end{simQ}
+
+\begin{simA}
+    \begin{equation*}
+        _5P_3 = \frac{5!}{(5-3)!}=5\times4\times3=60~\text{〔通り〕}
+    \end{equation*}
+\end{simA}
+
+\section{組合せ}
+
+\section{確\quad 率}
+
+\begin{exercise}
+    \item 
+\end{exercise}
