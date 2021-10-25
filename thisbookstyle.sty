@@ -23,6 +23,7 @@
 \RequirePackage [ table ] { xcolor }
 \RequirePackage { tikz, tcolorbox }
 \RequirePackage { enumitem }    % -- enumerate items
+%\RequirePackage { siunitx }
 % -- equations align
 \RequirePackage [ fleqn ]{ amsmath }
 \setlength{\mathindent}{2em}
@@ -40,6 +41,8 @@
     xeCJKfntef,  % -- emphasis
     pxrubrica    % -- ruby
 }
+% -- 设置下划线不跳过标点
+\xeCJKsetup { underline = { skip = false } }
 %% ---- fonts
 % 原始字体(森泽商用)：
 % rm - UD Reimin 黎明(https://tw.morisawa.co.jp/fonts/specimen/6122)
@@ -66,7 +69,7 @@ UprightFont     = *,
 BoldFont        = * Bold,
 ItalicFont      = * Italic,
 BoldItalicFont  = * Bold Italic,
-FontFace = {eb}{n}{Font = * Bold, FakeBold=1.4}]
+FontFace = {eb}{n}{Font = * Bold, FakeBold=1.8}]
 \setCJKmonofont{Sarasa Mono J}[
 FontFace = {lt}{n}{* Light},
 UprightFont     = *,
@@ -100,11 +103,11 @@ FontFace = {eb}{n}{* Bold}]
         afterindent = true
     },
     section = {
-        format = \sffamily\LARGE\raggedright,
+        format = \sffamily\raggedright\CTEXifname{\LARGE}{\bfseries\large},
         numberformat = \huge\secnumber,
         aftername = \hspace{1.2em},
         beforeskip = 22pt,
-        afterskip = 8pt,
+        afterskip = \CTEXifname{8pt}{14pt},
         aftertitle = \par,
         afterindent = true
     },
@@ -116,44 +119,6 @@ FontFace = {eb}{n}{* Bold}]
         afterindent = true
     }
 }
-%
-%% ==== Pagestyle
-\RequirePackage{fancyhdr}
-\fancypagestyle{this@headings}{%
-    \fancyhead{}
-    \fancyhead[EL]{\ltseries\sffamily\small\leftmark}
-    \fancyhead[OR]{\ltseries\sffamily\small\rightmark}
-    \fancyfoot{}
-    \fancyfoot[EL,OR]{\small\latin\thepage}
-    \renewcommand{\headrulewidth}{\z@}
-    \renewcommand{\footrulewidth}{\z@}}
-\renewcommand\frontmatter{%
-    \if@openright\cleardoublepage\else\clearpage\fi
-    \@mainmatterfalse
-    \pagenumbering{roman}
-    \pagestyle{this@headings}}
-\renewcommand\mainmatter{%
-    \if@openright\cleardoublepage\else\clearpage\fi
-    \@mainmattertrue
-    \pagenumbering{arabic}
-    \pagestyle{this@headings}}
-\renewcommand\backmatter{%
-    \if@openright\cleardoublepage\else\clearpage\fi
-    \@mainmatterfalse
-    \pagestyle{this@headings}
-    % Restore chapter entry contents line
-    \titlecontents{chapter}
-    [0pt]
-    {\addvspace{15pt}\sffamily\small}
-    {}
-    {}
-    {\titlerule*[3pt]{.}\normalsize~\thecontentspage}
-    [\addvspace{-15pt}\nointerlineskip]
-}
-% - apply pagestyle to special page(chap 1st page, etc...)
-\renewcommand\ps@plain{%
-    \fancyhead{}
-    \fancyfoot[EL,OR]{\small\latin\thepage}}
 %
 %% ==== Boxes
 \usetikzlibrary { calc, shapes.misc, shapes.callouts }
@@ -300,6 +265,7 @@ FontFace = {eb}{n}{* Bold}]
 % ==== Exercise Section Customization
 % -- section title box
 \newcommand{\exersection}{%
+    \phantomsection
     \begin{tcolorbox}[
         before skip=15pt,
         after skip=6pt,
@@ -335,6 +301,9 @@ FontFace = {eb}{n}{* Bold}]
 \setlist{itemsep=0pt, parsep=0pt, topsep=6pt}
 %
 \newenvironment{exercise}[1]{%
+    %  -- no break within \item by prefixing \filreak
+    \let\olditem\item
+    \renewcommand{\item}{\filbreak\olditem}
     \exersection
     \smallrrr
     \begin{enumerate}[%
@@ -351,6 +320,8 @@ FontFace = {eb}{n}{* Bold}]
         #1
     }{%
     \end{enumerate}
+    \let\item\olditem
+    \let\olditem\relax
 }
 %
 \newenvironment{exenum}[1]{%
@@ -391,7 +362,54 @@ FontFace = {eb}{n}{* Bold}]
 {\mbox{\bfseries\contentslabel{10mm}}} % - numbered-entry-format
 {\hspace*{-10mm}} % - numberless-entry-format
 {\titlerule*[3pt]{.}\normalsize~\thecontentspage}
+% ---- backmatter chapter entries
+\newcommand\set@toc@backmatter@chapter{%
+    \titlecontents{chapter}
+    [0pt]
+    {\addvspace{15pt}\sffamily\small}
+    {}
+    {}
+    {\titlerule*[3pt]{.}\normalsize~\thecontentspage}
+    [\addvspace{-15pt}\nointerlineskip]
+}
 %
+%% ==== Pagestyle
+\RequirePackage{fancyhdr}
+\fancypagestyle{this@headings}{%
+    \fancyhead{}
+    \fancyhead[EL]{\ltseries\sffamily\small\leftmark}
+    \fancyhead[OR]{\ltseries\sffamily\small\rightmark}
+    \fancyfoot{}
+    \fancyfoot[EL,OR]{\small\latin\thepage}
+    \renewcommand{\headrulewidth}{\z@}
+    \renewcommand{\footrulewidth}{\z@}}
+% - apply pagestyle to special page(chap 1st page, etc...)
+\renewcommand\ps@plain{%
+    \fancyhead{}
+    \fancyfoot[EL,OR]{\small\latin\thepage}}
+% -- interface for setting pagestyle
+\newcommand\setpsempty{\pagestyle{empty}}
+\newcommand\setpsplain{\pagestyle{plain}}
+\newcommand\setpsheading{\pagestyle{this@headings}}
+% 
+\renewcommand\frontmatter{%
+    \if@openright\cleardoublepage\else\clearpage\fi
+    \@mainmatterfalse
+    \pagenumbering{roman}
+    \setpsheading
+}
+\renewcommand\mainmatter{%
+    \if@openright\cleardoublepage\else\clearpage\fi
+    \@mainmattertrue
+    \pagenumbering{arabic}
+    \setpsheading
+}
+\renewcommand\backmatter{%
+    \if@openright\cleardoublepage\else\clearpage\fi
+    \@mainmatterfalse
+    \setpsplain
+    \set@toc@backmatter@chapter
+}
 %
 % ==== References
 \RequirePackage { graphicx, booktabs }

@@ -12,17 +12,17 @@
 \usepackage{bxjalipsum}
 %
 % ---- macros
-\xeCJKsetup { underline = { skip = false } }
 \newcommand\uemph[1]{\CJKunderline{#1}}
 \newcommand\bemph[1]{\textsf{\textbf{#1}}}
 \newcommand\tildeto{~～~}
-\newcommand\sfcref[1]{\textsf{\cref{#1}}}
+\newcommand\sfcref[1]{\protect\textsf{\mdseries\cref{#1}}}
 % 
 \begin{document}
-    \include{contents/cover.tex}
     \frontmatter
+    \include{contents/cover.tex}
     \include{contents/intro.tex}
     \tableofcontents
+    \include{contents/excel.tex}
     \mainmatter
     \include{contents/chapter01.tex}
     \include{contents/chapter02.tex}

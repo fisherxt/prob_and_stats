@@ -15,7 +15,7 @@ compiling passed env {
 
 ### Updates and Bug fixes
 
-- 20201021
+- 1021
 
   - { bugfix }  `chapintro` 修复文本高度变化时，右侧小图整体应未与边框底部对齐。
 

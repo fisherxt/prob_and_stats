@@ -1,31 +1,31 @@
-{% -- toc entries test
-    \newcount\foo
-    \newcount\bar
-    \foo=3
-    \loop
-        \chapter{第\the\foo 章标题}
-        \begin{chapintro}
-            \jalipsum[7]{kusamakura}
-        \end{chapintro}
-        {
-            \bar=1
-            \loop
-                \section{节~\the\foo.\the\bar 标题}
-                \jalipsum{kusamakura}
-            \advance \bar +1
-            \ifnum \bar<4
-            \repeat
-        
-            \exersection
-        }
-    \advance \foo +1
-    \ifnum \foo<13
-    \repeat
+\newcount\foo
+\newcount\bar
+\foo=3
+\loop
+    \chapter{第\the\foo 章标题}
+    \begin{chapintro}
+        \jalipsum[7]{kusamakura}
+    \end{chapintro}
+    {
+        \bar=1
+        \loop
+            \section{节~\the\foo.\the\bar 标题}
+            \jalipsum[1]{kusamakura}
+        \advance \bar +1
+        \ifnum \bar<4
+        \repeat
     
-    \backmatter
-    
-    \addcontentsline{toc}{chapter}{章末問題の解答例}
-    \addcontentsline{toc}{chapter}{参考文献}
-    \addcontentsline{toc}{chapter}{索\quad 引}
-    
-    \newpage\mbox{}
+        \exersection
+    }
+\advance \foo +1
+\ifnum \foo<13
+\repeat
+
+% 
+\backmatter
+% -- test 3-digit page number
+\addtocounter{page}{100}
+\phantomsection\addcontentsline{toc}{chapter}{章末問題の解答例}
+\phantomsection\addcontentsline{toc}{chapter}{参考文献}
+\phantomsection\addcontentsline{toc}{chapter}{索\quad 引}
+\mbox{}
